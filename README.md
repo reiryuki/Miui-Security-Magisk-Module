@@ -40,4 +40,4 @@
 - https://www.paypal.me/reiryuki
 
 ## Download
-- 
+- https://www.pling.com/p/1593896/
