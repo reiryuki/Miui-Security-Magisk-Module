@@ -4,7 +4,7 @@
 - com.miui.securitycenter, com.miui.securityadd, and com.miui.cleanmaster app ported for any Android 6 until 12 non-Miui ROM.
 
 ## Screenshots
-- 
+- https://t.me/androidryukimods/219
 
 ## Requirements
 - Not in Miui ROM
