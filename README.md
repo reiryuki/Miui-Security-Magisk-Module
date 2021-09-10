@@ -9,7 +9,7 @@
 ## Requirements
 - Not in Miui ROM
 - Android 6 until 12
-- Disabled Android Signature Verification for non AOSP signatured ROM
+- Disabled Android Signature Verification for non AOSP signatured ROM (READ Troubleshootings!)
 - Magisk installed
 - Miui Core Magisk Module v1.9 or above
 
