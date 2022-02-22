@@ -22,6 +22,10 @@
 
 ## Tested on
 - DotOS ROM Android 11
+- Ancient OS ROM Android 12
+
+## Bug
+- Miui Game Turbo is inside the com.miui.securitycenter and com.miui.securityadd but the shortcuts overlay won't be appeared.
 
 ## Troubleshootings & Optionals
 - https://t.me/androidryukimods/114
