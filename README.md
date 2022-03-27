@@ -16,7 +16,7 @@
 
 ## Installation Guide
 - Install [Miui Core Magisk Module v2.0 or above](https://github.com/reiryuki/Miui-Core-Magisk-Module) first. Tap here: https://github.com/reiryuki/Miui-Core-Magisk-Module
-- Install this module via Magisk app or Recovery
+- Install this module via Magisk app only
 - If installation failed, you need to disable Android Signature Verification first (READ Troubleshootings!)
 - Reboot
 
@@ -28,7 +28,12 @@
 - Miui Game Turbo is inside the com.miui.securitycenter and com.miui.securityadd but the shortcuts overlay won't be appeared.
 - Miui App Locker doesn't work
 
-## Troubleshootings & Optionals
+## Optionals
+- https://t.me/androidryukimodsdiscussions/60861
+- https://t.me/androidryukimodsdiscussions/54012
+
+## Troubleshootings
+- https://t.me/androidryukimodsdiscussions/29836
 - https://t.me/androidryukimodsdiscussions/64467
 
 ## Bug Report
