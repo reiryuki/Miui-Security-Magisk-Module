@@ -1,0 +1,5 @@
+DIR=/data/adb/modules/luckypatcher
+if [ -d $DIR ]; then
+  touch $DIR/disable
+fi
+
