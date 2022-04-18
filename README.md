@@ -15,8 +15,8 @@
 - Miui Core Magisk Module
 
 ## Installation Guide
-- Install [Miui Core Magisk Module v2.0 or above](https://github.com/reiryuki/Miui-Core-Magisk-Module) first. Tap here: https://github.com/reiryuki/Miui-Core-Magisk-Module
-- Install this module via Magisk app only
+- Install [Miui Core Magisk Module](https://github.com/reiryuki/Miui-Core-Magisk-Module) first. Tap here: https://github.com/reiryuki/Miui-Core-Magisk-Module
+- Install this module via Magisk app only (Download bellow)
 - If installation failed, you need to disable Android Signature Verification first (READ Troubleshootings!)
 - Reboot
 
