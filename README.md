@@ -28,8 +28,8 @@
 - Ancient OS ROM Android 12
 
 ## Bugs
-- Miui Game Turbo is inside the com.miui.securitycenter and com.miui.securityadd but the shortcuts overlay won't be appeared.
-- Miui App Locker doesn't work
+- Game booster shortcut overlay is appeared after turning off and on display first.
+- Miui App Locker doesn't work.
 
 ## Optionals
 - https://t.me/androidryukimodsdiscussions/60861
