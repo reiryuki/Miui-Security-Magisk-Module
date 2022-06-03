@@ -26,6 +26,7 @@
 ## Tested on
 - DotOS ROM Android 11
 - Ancient OS ROM Android 12
+- Nusantara ROM Android 12.1
 
 ## Bugs
 - Game booster shortcut overlay is appeared after turning off and on display first.
