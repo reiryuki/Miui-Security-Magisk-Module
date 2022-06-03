@@ -1,7 +1,7 @@
 id=MiuiSecurityCenter
 name=Miui Security Center
-version=v1.8
-versionCode=8
+version=v1.9-beta.5
+versionCode=9
 author=Rei Ryuki the Fixer
 description=Miui Security Center app by Xiaomi Inc. ported for any Android 5 and up non-Miui ROM.
 

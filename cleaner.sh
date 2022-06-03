@@ -4,7 +4,6 @@ PKG="com.miui.securitycenter
      com.lbe.security.miui
      com.miui.powerkeeper
      com.miui.guardprovider
-     com.miui.android.settings
      com.android.systemui
      com.android.phone"
 for PKGS in $PKG; do

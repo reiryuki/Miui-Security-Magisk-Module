@@ -5,6 +5,13 @@ if [ "$BOOTMODE" != true ]; then
   abort "- Please flash via Magisk Manager only!"
 fi
 
+# magisk
+if [ -d /sbin/.magisk ]; then
+  MAGISKTMP=/sbin/.magisk
+else
+  MAGISKTMP=`find /dev -mindepth 2 -maxdepth 2 -type d -name .magisk`
+fi
+
 # info
 MODVER=`grep_prop version $MODPATH/module.prop`
 MODVERCODE=`grep_prop versionCode $MODPATH/module.prop`
@@ -25,7 +32,7 @@ fi
 ui_print " "
 
 # sdk
-NUM=23
+NUM=21
 if [ "$API" -lt $NUM ]; then
   ui_print "! Unsupported SDK $API."
   ui_print "  You have to upgrade your Android version"
@@ -57,6 +64,16 @@ if [ ! -d /data/adb/modules_update/MiuiCore ] && [ ! -d /data/adb/modules/MiuiCo
 else
   rm -f /data/adb/modules/MiuiCore/remove
   rm -f /data/adb/modules/MiuiCore/disable
+fi
+
+# miuisettingsmod
+if [ ! -d /data/adb/modules_update/MiuiSettingsMod ] && [ ! -d /data/adb/modules/MiuiSettingsMod ]; then
+  ui_print "! Miui Settings Mod Magisk Module is not installed."
+  ui_print "  Please read github installation guide!"
+  abort
+else
+  rm -f /data/adb/modules/MiuiSettingsMod/remove
+  rm -f /data/adb/modules/MiuiSettingsMod/disable
 fi
 
 # function
@@ -109,6 +126,26 @@ if [ "$LUCKYPATCHER" != true ]; then
   fi
 fi
 
+# global
+FILE=$MODPATH/service.sh
+if getprop | grep -Eq "miui.global\]: \[1"; then
+  ui_print "- Global mode"
+  sed -i 's/#g//g' $FILE
+  ui_print "  Do not change the Home page orientation to landscape"
+  ui_print "  mode in Game Booster settings!"
+  ui_print " "
+fi
+
+# code
+FILE=$MODPATH/service.sh
+NAME=ro.miui.ui.version.code
+if getprop | grep -Eq "miui.code\]: \[0"; then
+  ui_print "- Removing $NAME..."
+  sed -i "s/resetprop $NAME/#resetprop $NAME/g" $FILE
+  ui_print "  Some features will be missing."
+  ui_print " "
+fi
+
 # cleaning
 ui_print "- Cleaning..."
 APP="`ls $MODPATH/system/priv-app` `ls $MODPATH/system/app`"
@@ -116,8 +153,7 @@ PKG="com.miui.securitycenter
      com.miui.cleanmaster
      com.miui.securityadd
      com.miui.powerkeeper
-     com.miui.guardprovider
-     com.miui.android.settings"
+     com.miui.guardprovider"
      #com.lbe.security.miui
 ADD="SystemUI TeleService"
 if [ "$BOOTMODE" == true ]; then
@@ -131,7 +167,6 @@ done
 for ADDS in $ADD; do
   rm -f `find /data/dalvik-cache /data/resource-cache -type f -name *$ADDS*.apk`
 done
-rm -f $MODPATH/LICENSE
 rm -rf /metadata/magisk/$MODID
 rm -rf /mnt/vendor/persist/magisk/$MODID
 rm -rf /persist/magisk/$MODID
@@ -185,7 +220,7 @@ fi
 # function
 extract_lib() {
 for APPS in $APP; do
-  ui_print "- Extracting $APPS.apk libs..."
+  ui_print "- Extracting..."
   FILE=`find $MODPATH/system -type f -name $APPS.apk`
   DIR=`find $MODPATH/system -type d -name $APPS`/lib/$ARCH
   mkdir -p $DIR
@@ -239,7 +274,6 @@ ui_print "  changing $PROP"
 ui_print "  to $MODPROP"
 ui_print "  Please wait..."
 sed -i "s/$PROP/$MODPROP/g" $FILE
-sed -i "s/$PROP/$MODPROP/g" $FILE2
 ui_print " "
 }
 
