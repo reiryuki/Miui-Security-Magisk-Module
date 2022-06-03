@@ -103,6 +103,11 @@ elif echo "$RES" | grep -Eq INSTALL_FAILED_SHARED_USER_INCOMPATIBLE; then
 elif echo "$RES" | grep -Eq INSTALL_FAILED_INSUFFICIENT_STORAGE; then
   ui_print "  Please free-up your internal storage first."
   abort
+elif getprop | grep -Eq "force.install\]: \[1"; then
+  ui_print "  ! Signature test is failed"
+  ui_print "    You need to disable Signature Verification of your"
+  ui_print "    Android first to use this module. READ #troubleshootings!"
+  ui_print "    Or maybe just insufficient storage."
 else
   ui_print "  ! Signature test is failed"
   ui_print "    You need to disable Signature Verification of your"
