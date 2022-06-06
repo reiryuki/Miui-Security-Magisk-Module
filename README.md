@@ -13,12 +13,12 @@
 - Disabled Android Signature Verification for non-AOSP Signatured ROM to grant UID system. Tap here: https://t.me/androidryukimodsdiscussions/58331
 - Magisk installed
 - Miui Core Magisk Module installed
-- Miui Settings Mod Magisk Module installed
+- Miui Settings Mod Magisk Module installed (except for v1.8 and bellow)
 
 ## Installation Guide
 - Run any optional commands only if you need (see bellow).
 - Install [Miui Core Magisk Module](https://github.com/reiryuki/Miui-Core-Magisk-Module) first. Tap here: https://github.com/reiryuki/Miui-Core-Magisk-Module
-- Install Miui Settings Mod Magisk Module. Tap here: https://github.com/reiryuki/Miui-Settings-Mod-Magisk-Module
+- Install Miui Settings Mod Magisk Module. Tap here: https://github.com/reiryuki/Miui-Settings-Mod-Magisk-Module (except for v1.8 and bellow)
 - Install this Miui Security Magisk Module via Magisk app only (download bellow).
 - If installation failed, you need to disable Android Signature Verification first (READ Troubleshootings!).
 - Reboot
