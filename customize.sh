@@ -12,6 +12,9 @@ else
   MAGISKTMP=`find /dev -mindepth 2 -maxdepth 2 -type d -name .magisk`
 fi
 
+# optionals
+OPTIONALS=/sdcard/optionals.prop
+
 # info
 MODVER=`grep_prop version $MODPATH/module.prop`
 MODVERCODE=`grep_prop versionCode $MODPATH/module.prop`
@@ -50,7 +53,7 @@ if [ "$BOOTMODE" != true ]; then
 fi
 FILE=$MODPATH/sepolicy.sh
 DES=$MODPATH/sepolicy.rule
-if [ -f $FILE ] && ! getprop | grep -Eq "sepolicy.sh\]: \[1"; then
+if [ -f $FILE ] && [ "`grep_prop sepolicy.sh $OPTIONALS`" != 1 ]; then
   mv -f $FILE $DES
   sed -i 's/magiskpolicy --live "//g' $DES
   sed -i 's/"//g' $DES
@@ -103,7 +106,7 @@ elif echo "$RES" | grep -Eq INSTALL_FAILED_SHARED_USER_INCOMPATIBLE; then
 elif echo "$RES" | grep -Eq INSTALL_FAILED_INSUFFICIENT_STORAGE; then
   ui_print "  Please free-up your internal storage first."
   abort
-elif getprop | grep -Eq "force.install\]: \[1"; then
+elif [ "`grep_prop force.install $OPTIONALS`" == 1 ]; then
   ui_print "  ! Signature test is failed"
   ui_print "    You need to disable Signature Verification of your"
   ui_print "    Android first to use this module. READ #troubleshootings!"
@@ -133,7 +136,7 @@ fi
 
 # global
 FILE=$MODPATH/service.sh
-if getprop | grep -Eq "miui.global\]: \[1"; then
+if [ "`grep_prop miui.global $OPTIONALS`" == 1 ]; then
   ui_print "- Global mode"
   sed -i 's/#g//g' $FILE
   ui_print "  Do not change the Home page orientation to landscape"
@@ -144,7 +147,7 @@ fi
 # code
 FILE=$MODPATH/service.sh
 NAME=ro.miui.ui.version.code
-if getprop | grep -Eq "miui.code\]: \[0"; then
+if [ "`grep_prop miui.code $OPTIONALS`" == 0 ]; then
   ui_print "- Removing $NAME..."
   sed -i "s/resetprop $NAME/#resetprop $NAME/g" $FILE
   ui_print "  Some features will be missing."
@@ -153,25 +156,17 @@ fi
 
 # cleaning
 ui_print "- Cleaning..."
-APP="`ls $MODPATH/system/priv-app` `ls $MODPATH/system/app`"
 PKG="com.miui.securitycenter
      com.miui.cleanmaster
      com.miui.securityadd
      com.miui.powerkeeper
      com.miui.guardprovider"
      #com.lbe.security.miui
-ADD="SystemUI TeleService"
 if [ "$BOOTMODE" == true ]; then
   for PKGS in $PKG; do
     RES=`pm uninstall $PKGS`
   done
 fi
-for APPS in $APP; do
-  rm -f `find /data/dalvik-cache /data/resource-cache -type f -name *$APPS*.apk`
-done
-for ADDS in $ADD; do
-  rm -f `find /data/dalvik-cache /data/resource-cache -type f -name *$ADDS*.apk`
-done
 rm -rf /metadata/magisk/$MODID
 rm -rf /mnt/vendor/persist/magisk/$MODID
 rm -rf /persist/magisk/$MODID
@@ -180,9 +175,8 @@ rm -rf /cache/magisk/$MODID
 ui_print " "
 
 # power save
-PROP=`getprop power.save`
 FILE=$MODPATH/system/etc/sysconfig/*
-if [ "$PROP" == 1 ]; then
+if [ "`grep_prop power.save $OPTIONALS`" == 1 ]; then
   ui_print "- $MODNAME will not be allowed in power save."
   ui_print "  It may save your battery but decreasing $MODNAME performance."
   for PKGS in $PKG; do
@@ -211,13 +205,9 @@ fi\' $MODPATH/post-fs-data.sh
 }
 
 # permissive
-if getprop | grep -Eq "permissive.mode\]: \[1"; then
+if [ "`grep_prop permissive.mode $OPTIONALS`" == 1 ]; then
   ui_print "- Using permissive method"
   rm -f $MODPATH/sepolicy.rule
-  permissive
-  ui_print " "
-elif getprop | grep -Eq "permissive.mode\]: \[2"; then
-  ui_print "- Using both permissive and SE policy patch"
   permissive
   ui_print " "
 fi
@@ -237,8 +227,8 @@ done
 }
 
 # extract
-PROP=`getprop ro.product.cpu.abi`
-DES=lib/$PROP/*
+APP="`ls $MODPATH/system/priv-app` `ls $MODPATH/system/app`"
+DES=lib/`getprop ro.product.cpu.abi`/*
 extract_lib
 
 # function
@@ -253,7 +243,7 @@ done
 hide_oat
 
 # features
-PROP=`getprop miui.features`
+PROP=`grep_prop miui.features $OPTIONALS`
 FILE=$MODPATH/system.prop
 FILE2=$MODPATH/service.sh
 if [ "$PROP" == 0 ]; then
