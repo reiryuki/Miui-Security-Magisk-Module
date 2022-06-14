@@ -1,7 +1,7 @@
 # Miui Security Center Magisk Module
 
 ## Descriptions
-- com.miui.securitycenter, com.miui.securityadd, com.miui.cleanmaster, and com.miui.guardprovider app by Xiaomi Inc.
+- Security, System service plugin, Cleaner, and MIUI security components app by Xiaomi Inc.
 
 ## Screenshots
 - https://t.me/androidryukimods/219
@@ -51,6 +51,7 @@
 ## Thanks for Donations
 - https://t.me/androidryukimodsdiscussions/2619
 - https://www.paypal.me/reiryuki
+- https://ko-fi.com/reiryuki
 
 ## Download
 - https://www.pling.com/p/1593896/
