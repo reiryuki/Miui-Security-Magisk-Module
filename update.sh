@@ -31,7 +31,7 @@ fi
 PROP=`getprop ro.product.cpu.abi`
 
 PKG=com.miui.securitycenter
-NAME="libmiuinative.so libmiuiblur.so"
+NAME="libnativehelper.so libmiuinative.so libmiuiblur.so"
 copy_library
 
 

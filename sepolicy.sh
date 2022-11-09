@@ -48,9 +48,6 @@ magiskpolicy --live "allow     crash_dump { mnt_user_file fuse } dir search"
 magiskpolicy --live "allow { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } default_android_hwservice hwservice_manager find"
 
 # service_manager
-magiskpolicy --live "allow { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } default_android_service service_manager find"
-
-
-
+magiskpolicy --live "allow { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } default_android_service service_manager { find add }"
 
 

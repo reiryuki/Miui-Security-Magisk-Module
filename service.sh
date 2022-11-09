@@ -20,11 +20,18 @@ grant_permission() {
 UID=`pm list packages -U | grep $PKG | sed -n -e "s/package:$PKG uid://p"`
 pm grant $PKG android.permission.READ_EXTERNAL_STORAGE
 pm grant $PKG android.permission.WRITE_EXTERNAL_STORAGE
-pm grant $PKG android.permission.ACCESS_MEDIA_LOCATION
+pm grant $PKG android.permission.ACCESS_MEDIA_LOCATION 2>/dev/null
+if [ "$API" -ge 33 ]; then
+  pm grant $PKG android.permission.READ_MEDIA_AUDIO
+  pm grant $PKG android.permission.READ_MEDIA_VIDEO
+  pm grant $PKG android.permission.READ_MEDIA_IMAGES
+fi
 appops set --uid $UID LEGACY_STORAGE allow
+appops set $PKG LEGACY_STORAGE allow
 appops set $PKG READ_EXTERNAL_STORAGE allow
 appops set $PKG WRITE_EXTERNAL_STORAGE allow
 appops set $PKG ACCESS_MEDIA_LOCATION allow
+appops set --uid $UID ACCESS_MEDIA_LOCATION allow
 appops set $PKG READ_MEDIA_AUDIO allow
 appops set $PKG READ_MEDIA_VIDEO allow
 appops set $PKG READ_MEDIA_IMAGES allow
@@ -35,6 +42,9 @@ if [ "$API" -ge 30 ]; then
   appops set $PKG MANAGE_EXTERNAL_STORAGE allow
   appops set $PKG NO_ISOLATED_STORAGE allow
   appops set $PKG AUTO_REVOKE_PERMISSIONS_IF_UNUSED ignore
+fi
+if [ "$API" -ge 31 ]; then
+  appops set $PKG MANAGE_MEDIA allow
 fi
 }
 
@@ -54,6 +64,7 @@ pm grant $PKG android.permission.READ_CALL_LOG
 pm grant $PKG android.permission.WRITE_CALL_LOG
 appops set $PKG SYSTEM_ALERT_WINDOW allow
 appops set $PKG GET_USAGE_STATS allow
+appops set $PKG ACCESS_RESTRICTED_SETTINGS allow
 grant_permission
 
 # grant
@@ -102,7 +113,7 @@ fi
 # disable
 FILE=$MODPATH/disabler.sh
 if [ -f $FILE ]; then
-  sh $FILE
+  . $FILE
   mv -f $FILE $FILE.txt
 fi
 
