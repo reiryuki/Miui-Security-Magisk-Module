@@ -3,5 +3,3 @@
     <hidden-api-whitelisted-app package="com.lbe.security.miui"/>
     <allow-in-power-save package="com.lbe.security.miui"/>
 </config>
-
-
