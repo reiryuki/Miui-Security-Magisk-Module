@@ -14,7 +14,3 @@
         <permission name="android.permission.CHANGE_CONFIGURATION"/>
     </privapp-permissions>
 </permissions>
-
-
-
-
