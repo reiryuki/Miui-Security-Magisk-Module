@@ -167,6 +167,34 @@ if [ "`grep_prop power.save $OPTIONALS`" == 1 ]; then
 fi
 
 # function
+conflict() {
+for NAMES in $NAME; do
+  DIR=/data/adb/modules_update/$NAMES
+  if [ -f $DIR/uninstall.sh ]; then
+    . $DIR/uninstall.sh
+  fi
+  rm -rf $DIR
+  DIR=/data/adb/modules/$NAMES
+  rm -f $DIR/update
+  touch $DIR/remove
+  FILE=/data/adb/modules/$NAMES/uninstall.sh
+  if [ -f $FILE ]; then
+    . $FILE
+    rm -f $FILE
+  fi
+  rm -rf /metadata/magisk/$NAMES
+  rm -rf /mnt/vendor/persist/magisk/$NAMES
+  rm -rf /persist/magisk/$NAMES
+  rm -rf /data/unencrypted/magisk/$NAMES
+  rm -rf /cache/magisk/$NAMES
+done
+}
+
+# conflict
+NAME=MiuiSecurityCenter
+conflict
+
+# function
 permissive_2() {
 sed -i '1i\
 SELINUX=`getenforce`\

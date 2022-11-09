@@ -1,4 +1,4 @@
-# Miui Security Center Magisk Module
+# Miui Security Magisk Module
 
 ## DISCLAIMER
 - Miui apps are owned by Xiaomi™.
