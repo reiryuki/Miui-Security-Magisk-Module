@@ -20,11 +20,11 @@
 - Any AOSP Signatured ROM to grant android.uid.system
 - Disabled Android Signature Verification for non-AOSP Signatured ROM to android.uid.system. Tap here: https://t.me/androidryukimodsdiscussions/58331
 - Miui Core Magisk Module installed
-- v1.9 requires Miui Settings Mod Magisk Module installed, otherwise not
+- v1.9 requires Miui Settings Mod Magisk Module installed, other version not
 
 ## Installation Guide & Download Link
 - Install Miui Core Magisk Module first: https://github.com/reiryuki/Miui-Core-Magisk-Module
-- v1.9 requires Miui Settings Mod Magisk Module installed https://github.com/reiryuki/Miui-Settings-Mod-Magisk-Module, otherwise not
+- v1.9 requires Miui Settings Mod Magisk Module installed https://github.com/reiryuki/Miui-Settings-Mod-Magisk-Module, other version not
 - Install this module https://www.pling.com/p/1593896/ via Magisk app only
 - If installation failed, READ Troubleshootings bellow!
 - If you want a complete functions, you can install Miui Settings Mod Magisk Module https://github.com/reiryuki/Miui-Settings-Mod-Magisk-Module also
@@ -39,7 +39,6 @@
 ## Known Issues
 - Game booster shortcut overlay is appeared after turning off and on display first.
 - Miui App Locker doesn't work.
-- Apps list in Game booster doesn't showed up in Android 13.
 
 ## Optionals
 - https://t.me/androidryukimodsdiscussions/60861

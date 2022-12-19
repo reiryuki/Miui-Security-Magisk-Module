@@ -1,14 +1,18 @@
 mount -o rw,remount /data
-MODPATH=${0%/*}
-MODID=`echo "$MODPATH" | sed 's|/data/adb/modules/||'`
+if [ ! "$MODPATH" ]; then
+  MODPATH=${0%/*}
+fi
+if [ ! "$MODID" ]; then
+  MODID=`echo "$MODPATH" | sed 's|/data/adb/modules/||' | sed 's|/data/adb/modules_update/||'`
+fi
 APP="`ls $MODPATH/system/priv-app`
      `ls $MODPATH/system/app`
      SystemUI TeleService"
 PKG="com.miui.securitycenter
      com.miui.cleanmaster
      com.miui.securityadd
-     com.miui.powerkeeper
      com.miui.guardprovider"
+     #com.miui.powerkeeper
      #com.lbe.security.miui
 for PKGS in $PKG; do
   rm -rf /data/user/*/$PKGS

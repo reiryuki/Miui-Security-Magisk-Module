@@ -9,11 +9,19 @@ set -x
 PROP=`getprop ro.product.device`
 resetprop --delete ro.product.mod_device
 #gresetprop ro.product.mod_device "$PROP"_global
-resetprop ro.miui.ui.version.code 11
-#resetprop ro.product.miname cepheus
+resetprop ro.miui.ui.version.code 14
 
 # wait
 sleep 60
+
+# settings
+DES=system
+NAME=status_bar_notification_style
+SET=`settings get $DES $NAME`
+VAL=1
+if [ "$SET" == null ] || [ "$SET" == 0 ]; then
+  settings put $DES $NAME $VAL
+fi
 
 # function
 grant_permission() {
@@ -25,6 +33,7 @@ if [ "$API" -ge 33 ]; then
   pm grant $PKG android.permission.READ_MEDIA_AUDIO
   pm grant $PKG android.permission.READ_MEDIA_VIDEO
   pm grant $PKG android.permission.READ_MEDIA_IMAGES
+  pm grant $PKG android.permission.POST_NOTIFICATIONS
 fi
 appops set --uid $UID LEGACY_STORAGE allow
 appops set $PKG LEGACY_STORAGE allow

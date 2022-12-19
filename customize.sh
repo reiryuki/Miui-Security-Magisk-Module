@@ -1,6 +1,6 @@
 # boot mode
 if [ "$BOOTMODE" != true ]; then
-  abort "- Please flash via Magisk Manager only!"
+  abort "- Please flash via Magisk app only!"
 fi
 
 # space
@@ -24,12 +24,23 @@ fi
 SYSTEM=`realpath $MIRROR/system`
 PRODUCT=`realpath $MIRROR/product`
 VENDOR=`realpath $MIRROR/vendor`
-SYSTEM_EXT=`realpath $MIRROR/system/system_ext`
-ODM=`realpath /odm`
-MY_PRODUCT=`realpath /my_product`
+SYSTEM_EXT=`realpath $MIRROR/system_ext`
+if [ -d $MIRROR/odm ]; then
+  ODM=`realpath $MIRROR/odm`
+else
+  ODM=`realpath /odm`
+fi
+if [ -d $MIRROR/my_product ]; then
+  MY_PRODUCT=`realpath $MIRROR/my_product`
+else
+  MY_PRODUCT=`realpath /my_product`
+fi
 
 # optionals
 OPTIONALS=/sdcard/optionals.prop
+if [ ! -f $OPTIONALS ]; then
+  touch $OPTIONALS
+fi
 
 # info
 MODVER=`grep_prop version $MODPATH/module.prop`
@@ -73,14 +84,16 @@ fi
 # sepolicy.rule
 FILE=$MODPATH/sepolicy.sh
 DES=$MODPATH/sepolicy.rule
-if [ -f $FILE ] && [ "`grep_prop sepolicy.sh $OPTIONALS`" != 1 ]; then
+if [ "`grep_prop sepolicy.sh $OPTIONALS`" != 1 ]\
+&& [ -f $FILE ]; then
   mv -f $FILE $DES
   sed -i 's/magiskpolicy --live "//g' $DES
   sed -i 's/"//g' $DES
 fi
 
 # miuicore
-if [ ! -d /data/adb/modules_update/MiuiCore ] && [ ! -d /data/adb/modules/MiuiCore ]; then
+if [ ! -d /data/adb/modules_update/MiuiCore ]\
+&& [ ! -d /data/adb/modules/MiuiCore ]; then
   ui_print "! Miui Core Magisk Module is not installed."
   ui_print "  Please read github installation guide!"
   abort
@@ -94,8 +107,8 @@ ui_print "- Cleaning..."
 PKG="com.miui.securitycenter
      com.miui.cleanmaster
      com.miui.securityadd
-     com.miui.powerkeeper
      com.miui.guardprovider"
+     #com.miui.powerkeeper
      #com.lbe.security.miui
 if [ "$BOOTMODE" == true ]; then
   for PKGS in $PKG; do
@@ -120,7 +133,8 @@ fi
 if [ "$RES" == Success ]; then
   RES=`pm uninstall -k $PKG`
   ui_print "  Signature test is passed"
-elif [ -d /data/adb/modules_update/luckypatcher ] || [ -d /data/adb/modules/luckypatcher ]; then
+elif [ -d /data/adb/modules_update/luckypatcher ]\
+|| [ -d /data/adb/modules/luckypatcher ]; then
   ui_print "  Enabling Patches to Android Lucky Patcher Module..."
   rm -f /data/adb/modules/luckypatcher/remove
   rm -f /data/adb/modules/luckypatcher/disable
@@ -248,13 +262,6 @@ for APPS in $APP; do
   ui_print " "
 done
 }
-
-# extract
-APP="`ls $MODPATH/system/priv-app` `ls $MODPATH/system/app`"
-DES=lib/`getprop ro.product.cpu.abi`/*
-extract_lib
-
-# function
 hide_oat() {
 for APPS in $APP; do
   mkdir -p `find $MODPATH/system -type d -name $APPS`/oat
@@ -262,6 +269,10 @@ for APPS in $APP; do
 done
 }
 
+# extract
+APP="`ls $MODPATH/system/priv-app` `ls $MODPATH/system/app`"
+DES=lib/`getprop ro.product.cpu.abi`/*
+extract_lib
 # hide
 hide_oat
 
@@ -270,8 +281,7 @@ FILE=$MODPATH/service.sh
 if [ "`grep_prop miui.global $OPTIONALS`" == 1 ]; then
   ui_print "- Global mode"
   sed -i 's/#g//g' $FILE
-  ui_print "  Do not change the Home page orientation to landscape"
-  ui_print "  mode in Game Booster settings!"
+  ui_print "  Game Booster doesn't work in global mode"
   ui_print " "
 fi
 
@@ -284,44 +294,6 @@ if [ "`grep_prop miui.code $OPTIONALS`" == 0 ]; then
   ui_print "  Some features will be missing."
   ui_print " "
 fi
-
-# features
-PROP=`grep_prop miui.features $OPTIONALS`
-FILE=$MODPATH/system.prop
-FILE2=$MODPATH/service.sh
-if [ "$PROP" == 0 ]; then
-  ui_print "- Removing ro.product.name changes..."
-  sed -i 's/ro.product.name=cepheus//g' $FILE
-  sed -i 's/resetprop ro.product.miname cepheus//g' $FILE2
-  ui_print " "
-elif [ "$PROP" ] && [ "$PROP" != 1 ]; then
-  ui_print "- Your ro.product.name will be changed to $PROP"
-  sed -i "s/cepheus/$PROP/g" $FILE
-  sed -i "s/cepheus/$PROP/g" $FILE2
-  ui_print " "
-else
-  ui_print "- Your ro.product.name will be changed to cepheus"
-  ui_print " "
-fi
-
-# function
-patch_file() {
-ui_print "- Patching"
-ui_print "  $FILE"
-ui_print "  changing $PROP"
-ui_print "  to $MODPROP"
-ui_print "  Please wait..."
-sed -i "s/$PROP/$MODPROP/g" $FILE
-ui_print " "
-}
-
-# patch
-#FILE=`find $MODPATH/system -type f -name libavlm.so`
-#if [ "$PROP" != 0 ]; then
-#  PROP=ro.product.device
-#  MODPROP=ro.product.miname
-#  patch_file
-#fi
 
 
 
