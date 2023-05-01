@@ -1,0 +1,4 @@
+com.miui.securitycenter
+com.miui.cleanmaster
+com.miui.securityadd
+com.miui.guardprovider

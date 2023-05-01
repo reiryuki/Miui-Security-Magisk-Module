@@ -4,9 +4,7 @@ if [ "$BOOTMODE" != true ]; then
 fi
 
 # space
-if [ "$BOOTMODE" == true ]; then
-  ui_print " "
-fi
+ui_print " "
 
 # magisk
 if [ -d /sbin/.magisk ]; then
@@ -81,14 +79,12 @@ if [ "$BOOTMODE" != true ]; then
   mount -o rw -t auto /dev/block/bootdevice/by-name/metadata /metadata
 fi
 
-# sepolicy.rule
-FILE=$MODPATH/sepolicy.sh
-DES=$MODPATH/sepolicy.rule
-if [ "`grep_prop sepolicy.sh $OPTIONALS`" != 1 ]\
+# sepolicy
+FILE=$MODPATH/sepolicy.rule
+DES=$MODPATH/sepolicy.pfsd
+if [ "`grep_prop sepolicy.sh $OPTIONALS`" == 1 ]\
 && [ -f $FILE ]; then
   mv -f $FILE $DES
-  sed -i 's/magiskpolicy --live "//g' $DES
-  sed -i 's/"//g' $DES
 fi
 
 # miuicore
@@ -104,15 +100,10 @@ fi
 
 # cleaning
 ui_print "- Cleaning..."
-PKG="com.miui.securitycenter
-     com.miui.cleanmaster
-     com.miui.securityadd
-     com.miui.guardprovider"
-     #com.miui.powerkeeper
-     #com.lbe.security.miui
+PKG=`cat $MODPATH/package.txt`
 if [ "$BOOTMODE" == true ]; then
   for PKGS in $PKG; do
-    RES=`pm uninstall $PKGS`
+    RES=`pm uninstall $PKGS 2>/dev/null`
   done
 fi
 rm -rf /metadata/magisk/$MODID
@@ -131,7 +122,7 @@ if [ "$RES" ]; then
   ui_print "  $RES"
 fi
 if [ "$RES" == Success ]; then
-  RES=`pm uninstall -k $PKG`
+  RES=`pm uninstall -k $PKG 2>/dev/null`
   ui_print "  Signature test is passed"
 elif [ -d /data/adb/modules_update/luckypatcher ]\
 || [ -d /data/adb/modules/luckypatcher ]; then
@@ -143,10 +134,10 @@ elif echo "$RES" | grep -Eq INSTALL_FAILED_SHARED_USER_INCOMPATIBLE; then
   ui_print "  Signature test is failed"
   ui_print "  But installation is allowed for this case"
   ui_print "  Make sure you have deactivated your Android Signature"
-  ui_print "  Verification or the app cannot be installed correctly."
-  ui_print "  If you don't know what it is, please READ Troubleshootings!"
+  ui_print "  Verification, otherwise the app cannot be installed correctly."
+  ui_print "  If you don't know what is it, please READ Troubleshootings!"
 elif echo "$RES" | grep -Eq INSTALL_FAILED_INSUFFICIENT_STORAGE; then
-  ui_print "  Please free-up your internal storage first."
+  ui_print "  Please free-up your internal storage first!"
   abort
 elif [ "`grep_prop force.install $OPTIONALS`" == 1 ]; then
   ui_print "  ! Signature test is failed"
@@ -166,8 +157,9 @@ ui_print " "
 # test
 APP=SecurityCenter
 PKG=com.miui.securitycenter
-test_signature
-
+if ! pm list package | grep -Eq $PKG; then
+  test_signature
+fi
 # power save
 FILE=$MODPATH/system/etc/sysconfig/*
 if [ "`grep_prop power.save $OPTIONALS`" == 1 ]; then
@@ -252,14 +244,17 @@ fi
 # function
 extract_lib() {
 for APPS in $APP; do
-  ui_print "- Extracting..."
   FILE=`find $MODPATH/system -type f -name $APPS.apk`
-  DIR=`find $MODPATH/system -type d -name $APPS`/lib/$ARCH
-  mkdir -p $DIR
-  rm -rf $TMPDIR/*
-  unzip -d $TMPDIR -o $FILE $DES
-  cp -f $TMPDIR/$DES $DIR
-  ui_print " "
+  if [ -f `dirname $FILE`/extract ]; then
+    rm -f `dirname $FILE`/extract
+    ui_print "- Extracting..."
+    DIR=`dirname $FILE`/lib/$ARCH
+    mkdir -p $DIR
+    rm -rf $TMPDIR/*
+    unzip -d $TMPDIR -o $FILE $DES
+    cp -f $TMPDIR/$DES $DIR
+    ui_print " "
+  fi
 done
 }
 hide_oat() {
@@ -278,10 +273,9 @@ hide_oat
 
 # global
 FILE=$MODPATH/service.sh
-if [ "`grep_prop miui.global $OPTIONALS`" == 1 ]; then
+if [ "`grep_prop miui.security.global $OPTIONALS`" == 1 ]; then
   ui_print "- Global mode"
   sed -i 's/#g//g' $FILE
-  ui_print "  Game Booster doesn't work in global mode"
   ui_print " "
 fi
 

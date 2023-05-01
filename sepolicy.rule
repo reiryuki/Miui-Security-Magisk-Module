@@ -1,44 +1,81 @@
 # debug
-magiskpolicy --live "dontaudit system_server system_file file write"
-magiskpolicy --live "allow     system_server system_file file write"
+dontaudit system_server system_file file write
+allow     system_server system_file file write
+
+# context
+create { system_lib_file vendor_file vendor_configs_file }
+dontaudit { system_file system_lib_file vendor_file vendor_configs_file } labeledfs filesystem associate
+allow     { system_file system_lib_file vendor_file vendor_configs_file } labeledfs filesystem associate
+dontaudit init { system_file system_lib_file vendor_file vendor_configs_file } { dir file } relabelfrom
+allow     init { system_file system_lib_file vendor_file vendor_configs_file } { dir file } relabelfrom
 
 # sock_file
-magiskpolicy --live "dontaudit { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } property_socket sock_file write"
-magiskpolicy --live "allow     { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } property_socket sock_file write"
+dontaudit { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } property_socket sock_file write
+allow     { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } property_socket sock_file write
 
 # file
-magiskpolicy --live "dontaudit { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } * file { read open getattr map }"
-magiskpolicy --live "allow     { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } * file { read open getattr map }"
-magiskpolicy --live "dontaudit { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } { system_app_data_file privapp_data_file } file execute"
-magiskpolicy --live "allow     { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } { system_app_data_file privapp_data_file } file execute"
-magiskpolicy --live "dontaudit { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } apk_data_file file ioctl"
-magiskpolicy --live "allow     { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } apk_data_file file ioctl"
-magiskpolicy --live "dontaudit { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } system_file file lock"
-magiskpolicy --live "allow     { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } system_file file lock"
-magiskpolicy --live "dontaudit crash_dump fuse file { read open getattr }"
-magiskpolicy --live "allow     crash_dump fuse file { read open getattr }"
+dontaudit { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } * file { read open getattr map }
+allow     { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } * file { read open getattr map }
+dontaudit { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } { system_app_data_file privapp_data_file } file execute
+allow     { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } { system_app_data_file privapp_data_file } file execute
+dontaudit { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } apk_data_file file ioctl
+allow     { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } apk_data_file file ioctl
+dontaudit { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } system_file file lock
+allow     { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } system_file file lock
+dontaudit { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } system_linker_exec file execute_no_trans
+allow     { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } system_linker_exec file execute_no_trans
+dontaudit crash_dump { fuse app_data_file resourcecache_data_file } file { read open getattr }
+allow     crash_dump { fuse app_data_file resourcecache_data_file } file { read open getattr }
 
 # dir
-magiskpolicy --live "dontaudit { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } * dir { search getattr }"
-magiskpolicy --live "allow     { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } * dir { search getattr }"
-magiskpolicy --live "dontaudit { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } apk_data_file dir write"
-magiskpolicy --live "allow     { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } apk_data_file dir write"
-magiskpolicy --live "dontaudit { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } { system_bootstrap_lib_file vendor_firmware_file vendor_keylayout_file metadata_file system_data_file asec_apk_file } dir read"
-magiskpolicy --live "allow     { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } { system_bootstrap_lib_file vendor_firmware_file vendor_keylayout_file metadata_file system_data_file asec_apk_file } dir read"
-magiskpolicy --live "dontaudit { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } { apex_mnt_dir adsprpcd_file vendor_firmware_file vendor_keylayout_file metadata_file } dir open"
-magiskpolicy --live "allow     { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } { apex_mnt_dir adsprpcd_file vendor_firmware_file vendor_keylayout_file metadata_file } dir open"
-magiskpolicy --live "dontaudit crash_dump { mnt_user_file fuse } dir search"
-magiskpolicy --live "allow     crash_dump { mnt_user_file fuse } dir search"
+dontaudit { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } * dir { search getattr read open }
+allow     { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } * dir { search getattr read open }
+dontaudit { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } apk_data_file dir write
+allow     { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } apk_data_file dir write
+dontaudit crash_dump { mnt_user_file fuse } dir search
+allow     crash_dump { mnt_user_file fuse } dir search
 
 # unix_stream_socket
-magiskpolicy --live "dontaudit { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } init unix_stream_socket connectto"
-magiskpolicy --live "allow     { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } init unix_stream_socket connectto"
+dontaudit { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } init unix_stream_socket connectto
+allow     { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } init unix_stream_socket connectto
+
+# process
+dontaudit system_app system_app process ptrace
+allow     system_app system_app process ptrace
+dontaudit platform_app platform_app process ptrace
+allow     platform_app platform_app process ptrace
+dontaudit priv_app priv_app process ptrace
+allow     priv_app priv_app process ptrace
+dontaudit untrusted_app_29 untrusted_app_29 process ptrace
+allow     untrusted_app_29 untrusted_app_29 process ptrace
+dontaudit untrusted_app_27 untrusted_app_27 process ptrace
+allow     untrusted_app_27 untrusted_app_27 process ptrace
+dontaudit untrusted_app untrusted_app process ptrace
+allow     untrusted_app untrusted_app process ptrace
 
 # hwservice_manager
-magiskpolicy --live "allow { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } default_android_hwservice hwservice_manager find"
+allow { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } default_android_hwservice hwservice_manager find
 
 # service_manager
-magiskpolicy --live "allow { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } default_android_service service_manager { find add }"
-magiskpolicy --live "allow { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } { perfshielder ProcessManager } service_manager add"
+allow { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } default_android_service service_manager { find add }
+allow { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } { perfshielder ProcessManager } service_manager add
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
