@@ -3,5 +3,6 @@
     <privapp-permissions package="com.miui.guardprovider">
         <permission name="android.permission.READ_PRIVILEGED_PHONE_STATE"/>
         <permission name="android.permission.INTERACT_ACROSS_USERS"/>
+        <permission name="android.permission.WRITE_APN_SETTINGS"/>
     </privapp-permissions>
 </permissions>

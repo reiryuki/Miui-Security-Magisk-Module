@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <permissions>
     <privapp-permissions package="com.miui.cleanmaster">
+        <permission name="android.permission.DELETE_PACKAGES"/>
+        <permission name="com.android.launcher3.permission.READ_SETTINGS"/>
+        <permission name="com.google.android.launcher.permission.READ_SETTINGS"/>
+        <permission name="com.mi.android.globallauncher.permission.READ_SETTINGS"/>
+        <permission name="com.android.launcher.permission.READ_SETTINGS"/>
         <permission name="android.permission.CLEAR_APP_CACHE"/>
         <permission name="android.permission.READ_LOGS"/>
         <permission name="android.permission.ACCESS_MTP"/>
