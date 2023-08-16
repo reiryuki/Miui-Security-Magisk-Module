@@ -69,6 +69,9 @@ fi
 
 # grant
 PKG=com.miui.securitycenter
+if [ "$API" -ge 31 ]; then
+  pm grant $PKG android.permission.BLUETOOTH_CONNECT
+fi
 if [ "$API" -ge 33 ]; then
   pm grant $PKG android.permission.POST_NOTIFICATIONS
 fi
