@@ -2,13 +2,13 @@
 
 ## DISCLAIMER
 - Miui apps are owned by Xiaomi™.
-- The MIT license specified here is for the Magisk Module, not for Miui apps.
+- The MIT license specified here is for the Magisk Module only, not for Miui apps.
 
 ## Descriptions
 - Security app, Game Turbo, Cleaner, and Security Scan by Xiaomi Inc. ported and integrated as a Magisk Module for all supported and rooted devices with Magisk
 
 ## Sources
-- apkmirror.com com.miui.securitycenter, com.miui.securityadd, com.miui.cleanmaster, & com.miui.guardprovider by Xiaomi Inc.
+- https://apkmirror.com com.miui.securitycenter, com.miui.securityadd, com.miui.cleanmaster, & com.miui.guardprovider by Xiaomi Inc.
 
 ## Screenshots
 - https://t.me/androidryukimods/219
@@ -16,31 +16,30 @@
 ## Requirements
 - NOT in Miui ROM
 - Android 5 and up
-- Magisk installed
-- Any AOSP Signatured ROM to grant android.uid.system
-- Disabled Android Signature Verification for non-AOSP Signatured ROM to grant android.uid.system. Tap here: https://t.me/androidryukimodsdiscussions/58331
+- Magisk or KernelSU installed
+- Ultra Battery Saver and Game Turbo requires AOSP signatured ROM or disabled Android Signature Verification in non-AOSP Signatured ROM https://t.me/androidryukimodsdiscussions/58331
 - Miui Core Magisk Module installed
-- v1.9 requires Miui Settings Mod Magisk Module installed, other version not
 
 ## Installation Guide & Download Link
 - Install Miui Core Magisk Module first: https://github.com/reiryuki/Miui-Core-Magisk-Module
-- v1.9 requires Miui Settings Mod Magisk Module installed https://github.com/reiryuki/Miui-Settings-Mod-Magisk-Module, other version not
-- Install this module https://www.pling.com/p/1593896/ via Magisk app only
-- If installation failed, READ Troubleshootings bellow!
+- Install this module https://www.pling.com/p/1593896/ via Magisk app or KernelSU app only
 - Reboot
-- Go to app info of System service plugin app and MIUI security components app and allow their network access
+- If you are using KernelSU, you need to allow superuser list manually all package name listed in package.txt (and your home launcher app also) (enable show system apps) and reboot after
+- If you are using SUList, you need to allow list manually your home launcher app (enable show system apps) and reboot after
+- Go to app info of Security, Cleaner, System service plugin, and MIUI security components app and allow their network access
 - Turn off and on display at game app that you have added to Game Turbo to show Game Turbo shortcut overlay
 
 ## Tested on
 - Android 11 DotOS ROM
 - Android 12 Ancient OS ROM
 - Android 12.1 Nusantara ROM
-- Android 13 AOSP ROM
-- Android 13 CrDroid ROM
+- Android 13 AOSP ROM & CrDroid ROM
 
 ## Known Issues
-- Lock apps & Hide apps doesn't work.
-- App list doesn't appear in Window Overlay Shortcuts.
+- Lock apps, hide apps, & data restriction doesn't work
+- App list doesn't appear in Window Overlay Shortcuts
+- Uninstall an app requires 2 confirmations
+- Cannot uninstall multiple apps at once
 
 ## Optionals
 - https://t.me/androidryukimodsdiscussions/60861
@@ -59,7 +58,7 @@
 - You can contribute ideas about this Magisk Module here: https://t.me/androidappsportdevelopment
 
 ## Thanks for Donations
-- This Magisk Module is always will be free but you can however show us that you are care by making a donations:
+This Magisk Module is always will be free but you can however show us that you are care by making a donations:
 - https://ko-fi.com/reiryuki
 - https://www.paypal.me/reiryuki
 - https://t.me/androidryukimodsdiscussions/2619
