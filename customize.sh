@@ -1,7 +1,7 @@
 # boot mode
-if [ "$BOOTMODE" != true ]; then
-  abort "- Please flash via Magisk app only!"
-fi
+#if [ "$BOOTMODE" != true ]; then
+#  abort "- Please flash via Magisk app only!"
+#fi
 
 # space
 ui_print " "
