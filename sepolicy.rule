@@ -41,7 +41,7 @@ allow { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untru
 allow { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } { perfshielder ProcessManager } service_manager add
 
 # property_service
-allow { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } system_prop property_service set
+allow { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } { system_prop debug.prop } property_service set
 
 
 
