@@ -15,6 +15,14 @@
 		>
 	</uses-sdk>
 	<uses-permission
+		android:name="android.permission.USE_BIOMETRIC"
+		>
+	</uses-permission>
+	<uses-permission
+		android:name="android.permission.READ_PHONE_STATE"
+		>
+	</uses-permission>
+	<uses-permission
 		android:name="android.permission.BLUETOOTH_CONNECT"
 		>
 	</uses-permission>
@@ -863,7 +871,7 @@
 		android:requestRawExternalStorageAccess="true"
 		>
 		<uses-library
-			android:name="com.miui.system"
+			android:name="miui"
 			android:required="false"
 			>
 		</uses-library>
