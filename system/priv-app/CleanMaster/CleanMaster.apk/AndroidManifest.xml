@@ -272,7 +272,7 @@
 		android:requestRawExternalStorageAccess="true"
 		>
 		<uses-library
-			android:name="com.miui.rom"
+			android:name="miui"
 			android:required="false"
 			>
 		</uses-library>
@@ -1021,11 +1021,6 @@
 		</uses-library>
 		<uses-library
 			android:name="org.apache.http.legacy"
-			android:required="false"
-			>
-		</uses-library>
-		<uses-library
-			android:name="com.miui.system"
 			android:required="false"
 			>
 		</uses-library>
