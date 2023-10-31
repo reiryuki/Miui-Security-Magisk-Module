@@ -79,7 +79,7 @@ rm -f $FILE
 FILE=$MODPATH/cleaner.sh
 if [ -f $FILE ]; then
   . $FILE
-  rm -f $FILE
+  mv -f $FILE $FILE\.txt
 fi
 
 

@@ -1,9 +1,11 @@
 MODPATH=${0%/*}
-API=`getprop ro.build.version.sdk`
 
 # log
 exec 2>$MODPATH/debug.log
 set -x
+
+# var
+API=`getprop ro.build.version.sdk`
 
 # property
 PROP=`getprop ro.product.device`
@@ -137,7 +139,7 @@ grant_permission
 
 # grant
 PKG=com.lbe.security.miui
-if pm list packages | grep $PKG; then
+if appops get $PKG > /dev/null 2>&1; then
   pm grant $PKG android.permission.READ_PHONE_STATE
   pm grant $PKG android.permission.ACCESS_FINE_LOCATION
   pm grant $PKG android.permission.ACCESS_COARSE_LOCATION
@@ -147,7 +149,7 @@ fi
 
 # grant
 PKG=com.miui.powerkeeper
-if pm list packages | grep $PKG; then
+if appops get $PKG > /dev/null 2>&1; then
   grant_permission
 fi
 
