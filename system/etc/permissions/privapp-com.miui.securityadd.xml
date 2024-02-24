@@ -5,6 +5,7 @@
         <permission name="com.google.android.launcher.permission.READ_SETTINGS"/>
         <permission name="com.mi.android.globallauncher.permission.READ_SETTINGS"/>
         <permission name="com.android.launcher.permission.READ_SETTINGS"/>
+        <permission name="android.permission.SCHEDULE_EXACT_ALARM"/>
         <permission name="android.permission.MODIFY_NETWORK_ACCOUNTING"/>
         <permission name="android.permission.WRITE_SECURE_SETTINGS"/>
         <permission name="android.permission.READ_PRIVILEGED_PHONE_STATE"/>
