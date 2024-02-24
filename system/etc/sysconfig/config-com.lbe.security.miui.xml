@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<config>
-    <hidden-api-whitelisted-app package="com.lbe.security.miui"/>
-    <allow-in-power-save package="com.lbe.security.miui"/>
-</config>
