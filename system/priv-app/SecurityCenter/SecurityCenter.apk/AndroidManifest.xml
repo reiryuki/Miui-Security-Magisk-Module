@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
 	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:sharedUserId="@7F121948"
 	android:versionCode="40000736"
 	android:versionName="7.3.6-221209.0.1_reiryuki"
 	android:compileSdkVersion="31"
@@ -14,6 +15,10 @@
 		android:targetSdkVersion="31"
 		>
 	</uses-sdk>
+	<uses-permission
+		android:name="android.permission.MODIFY_AUDIO_SETTINGS"
+		>
+	</uses-permission>
 	<uses-permission
 		android:name="android.permission.USE_BIOMETRIC"
 		>
@@ -858,6 +863,7 @@
 		android:label="@7F120236"
 		android:icon="@7F0802CF"
 		android:name="com.miui.securitycenter.Application"
+		android:allowClearUserData="@7F121949"
 		android:backupAgent="com.miui.antispam.service.backup.SecurityCenterBackupAgent"
 		android:hardwareAccelerated="true"
 		android:uiOptions="0x00000001"
