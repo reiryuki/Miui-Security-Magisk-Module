@@ -11,10 +11,30 @@ API=`getprop ro.build.version.sdk`
 PROP=`getprop ro.product.device`
 resetprop --delete ro.security.mod_device
 #gresetprop ro.security.mod_device "$PROP"_global
-resetprop ro.miui.ui.version.code 14
+resetprop -n ro.miui.ui.version.code 14
+resetprop -n ro.vendor.fps.switch.default true
+resetprop -n ro.vendor.audio.dpaudio true
+resetprop -n ro.vendor.audio.game.mode true
+resetprop -n ro.vendor.audio.game.effect true
+resetprop -n ro.vendor.audio.game.vibrate true
+resetprop -n ro.vendor.audio.voice.change.support true
+resetprop -n ro.vendor.audio.voice.change.version 2
+resetprop -n ro.vendor.audio.voice.change.youme.support true
+resetprop -n ro.vendor.audio.videobox.switch true
+resetprop -n ro.vendor.video_box.version 2
+resetprop -n ro.vendor.video.style.by.layer.support true
+resetprop -n ro.vendor.media.video.frc.support true
+resetprop -n ro.vendor.media.video.vpp.support true
+resetprop -n ro.vendor.media.video.style.support true
+resetprop -n ro.vendor.display.dynamic_refresh_rate true
+resetprop -n ro.vendor.gcp.enable true
+PROP=ro.vendor.touchfeature.type
+if [ ! "`getprop $PROP`" ]; then
+  resetprop -n $PROP 43
+fi
 
 # wait
-until [ "`getprop sys.boot_completed`" == "1" ]; do
+until [ "`getprop sys.boot_completed`" == 1 ]; do
   sleep 10
 done
 
@@ -58,12 +78,20 @@ fi
 if [ "$API" -ge 31 ]; then
   appops set $PKG MANAGE_MEDIA allow
 fi
+if [ "$API" -ge 34 ]; then
+  appops set $PKG READ_MEDIA_VISUAL_USER_SELECTED allow
+fi
 PKGOPS=`appops get $PKG`
 UID=`dumpsys package $PKG 2>/dev/null | grep -m 1 userId= | sed 's|    userId=||g'`
 if [ "$UID" -gt 9999 ]; then
   appops set --uid "$UID" LEGACY_STORAGE allow
+  appops set --uid "$UID" READ_EXTERNAL_STORAGE allow
+  appops set --uid "$UID" WRITE_EXTERNAL_STORAGE allow
   if [ "$API" -ge 29 ]; then
     appops set --uid "$UID" ACCESS_MEDIA_LOCATION allow
+  fi
+  if [ "$API" -ge 34 ]; then
+    appops set --uid "$UID" READ_MEDIA_VISUAL_USER_SELECTED allow
   fi
   UIDOPS=`appops get --uid "$UID"`
 fi
@@ -151,13 +179,6 @@ fi
 PKG=com.miui.powerkeeper
 if appops get $PKG > /dev/null 2>&1; then
   grant_permission
-fi
-
-# disable
-FILE=$MODPATH/disabler.sh
-if [ -f $FILE ]; then
-  . $FILE
-  mv -f $FILE $FILE.txt
 fi
 
 

@@ -1,34 +1,5 @@
-# boot mode
-#if [ "$BOOTMODE" != true ]; then
-#  abort "- Please install via Magisk/KernelSU app only!"
-#fi
-
 # space
 ui_print " "
-
-# log
-if [ "$BOOTMODE" != true ]; then
-  FILE=/sdcard/$MODID\_recovery.log
-  ui_print "- Log will be saved at $FILE"
-  exec 2>$FILE
-  ui_print " "
-fi
-
-# optionals
-OPTIONALS=/sdcard/optionals.prop
-if [ ! -f $OPTIONALS ]; then
-  touch $OPTIONALS
-fi
-
-# debug
-if [ "`grep_prop debug.log $OPTIONALS`" == 1 ]; then
-  ui_print "- The install log will contain detailed information"
-  set -x
-  ui_print " "
-fi
-
-# run
-. $MODPATH/function.sh
 
 # info
 MODVER=`grep_prop version $MODPATH/module.prop`
@@ -47,17 +18,49 @@ else
 fi
 ui_print " "
 
+# var
+UID=`id -u`
+
+# log
+if [ "$BOOTMODE" != true ]; then
+  FILE=/data/media/"$UID"/$MODID\_recovery.log
+  ui_print "- Log will be saved at $FILE"
+  exec 2>$FILE
+  ui_print " "
+fi
+
+# optionals
+OPTIONALS=/data/media/"$UID"/optionals.prop
+if [ ! -f $OPTIONALS ]; then
+  touch $OPTIONALS
+fi
+
+# debug
+if [ "`grep_prop debug.log $OPTIONALS`" == 1 ]; then
+  ui_print "- The install log will contain detailed information"
+  set -x
+  ui_print " "
+fi
+
 # sdk
 NUM=21
 if [ "$API" -lt $NUM ]; then
   ui_print "! Unsupported SDK $API."
   ui_print "  You have to upgrade your Android version"
-  ui_print "  at least SDK API $NUM to use this module."
+  ui_print "  at least SDK $NUM to use this module."
   abort
 else
   ui_print "- SDK $API"
   ui_print " "
 fi
+
+# boot mode
+if [ "$BOOTMODE" != true ]; then
+  abort "- Please install via Magisk/KernelSU app only!"
+fi
+
+# run
+. $MODPATH/function.sh
 
 # sepolicy
 FILE=$MODPATH/sepolicy.rule
@@ -133,7 +136,6 @@ elif [ -d /data/adb/modules_update/luckypatcher ]\
   ui_print "  Enabling Patches to Android Lucky Patcher Module..."
   rm -f /data/adb/modules/luckypatcher/remove
   rm -f /data/adb/modules/luckypatcher/disable
-  mv -f $MODPATH/disabler.sh.txt $MODPATH/disabler.sh
 elif echo "$RES" | grep -q INSTALL_FAILED_SHARED_USER_INCOMPATIBLE; then
   ui_print "  Signature test is failed"
   ui_print "  But installation is allowed for this case"
@@ -158,11 +160,11 @@ ui_print " "
 # test
 APP=SecurityCenter
 PKG=com.miui.securitycenter
-#if [ "$BOOTMODE" == true ]; then
-#  if ! appops get $PKG > /dev/null 2>&1; then
-#    test_signature
-#  fi
-#fi
+if [ "$BOOTMODE" == true ]; then
+  if ! appops get $PKG > /dev/null 2>&1; then
+    test_signature
+  fi
+fi
 
 # function
 conflict() {
@@ -276,12 +278,10 @@ FILE=$MODPATH/service.sh
 NAME=ro.miui.ui.version.code
 if [ "`grep_prop miui.code $OPTIONALS`" == 0 ]; then
   ui_print "- Removing $NAME..."
-  sed -i "s|resetprop $NAME|#resetprop $NAME|g" $FILE
+  sed -i "s|resetprop -n $NAME|#resetprop -n $NAME|g" $FILE
   ui_print "  Some features will be missing."
   ui_print " "
 fi
-
-
 
 
 

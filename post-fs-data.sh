@@ -46,7 +46,6 @@ FILE=$MODPATH/sepolicy.pfsd
 sepolicy_sh
 
 # list
-(
 PKGS="`cat $MODPATH/package.txt`
        com.miui.cleanmaster:micleansdk
        com.miui.securitycenter.remote
@@ -54,32 +53,37 @@ PKGS="`cat $MODPATH/package.txt`
        com.miui.securitycenter:ui
        com.miui.securityadd.home"
 for PKG in $PKGS; do
-  magisk --denylist rm $PKG
-  magisk --sulist add $PKG
+  magisk --denylist rm $PKG 2>/dev/null
+  magisk --sulist add $PKG 2>/dev/null
 done
-FILE=$MODPATH/tmp_file
-magisk --hide sulist 2>$FILE
-if [ "`cat $FILE`" == 'SuList is enforced' ]; then
+if magisk magiskhide sulist; then
   for PKG in $PKGS; do
-    magisk --hide add $PKG
+    magisk magiskhide add $PKG
   done
 else
   for PKG in $PKGS; do
-    magisk --hide rm $PKG
+    magisk magiskhide rm $PKG
   done
 fi
-rm -f $FILE
-) 2>/dev/null
 
 # dependency
 #rm -f /data/adb/modules/MiuiCore/remove
 #rm -f /data/adb/modules/MiuiCore/disable
 
+# patch plat_seapp_contexts
+FILE=/system/etc/selinux/plat_seapp_contexts
+rm -f $MODPATH$FILE
+if ! grep 'user=system seinfo=default domain=system_app type=system_app_data_file' $FILE; then
+  cp -af $FILE $MODPATH$FILE
+  sed -i '1i\
+user=system seinfo=default domain=system_app type=system_app_data_file' $MODPATH$FILE
+fi
+
 # cleaning
 FILE=$MODPATH/cleaner.sh
 if [ -f $FILE ]; then
   . $FILE
-  mv -f $FILE $FILE\.txt
+  mv -f $FILE $FILE.txt
 fi
 
 

@@ -1,2 +1,5 @@
 # prevent bootloop
 ro.control_privapp_permissions=log
+
+# miui
+persist.sys.power.default.powermode=1
