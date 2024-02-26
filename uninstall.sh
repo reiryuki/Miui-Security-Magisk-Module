@@ -12,7 +12,7 @@ set -x
 
 # cleaning
 remove_cache
-PKGS=`cat $MODPATH/package.txt`
+PKGS=`cat $MODPATH/package.txt | sed 's|com.miui.securitycenter||g'`
 for PKG in $PKGS; do
   rm -rf /data/user*/"$UID"/$PKG
 done

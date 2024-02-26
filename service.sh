@@ -12,6 +12,7 @@ PROP=`getprop ro.product.device`
 resetprop --delete ro.security.mod_device
 #gresetprop ro.security.mod_device "$PROP"_global
 resetprop -n ro.miui.ui.version.code 14
+#resetprop -n log.tag.autodensity.debug.enable 1
 resetprop -n ro.vendor.fps.switch.default true
 resetprop -n ro.vendor.audio.dpaudio true
 resetprop -n ro.vendor.audio.game.mode true
@@ -82,8 +83,8 @@ if [ "$API" -ge 34 ]; then
   appops set $PKG READ_MEDIA_VISUAL_USER_SELECTED allow
 fi
 PKGOPS=`appops get $PKG`
-UID=`dumpsys package $PKG 2>/dev/null | grep -m 1 userId= | sed 's|    userId=||g'`
-if [ "$UID" -gt 9999 ]; then
+UID=`dumpsys package $PKG 2>/dev/null | grep -m 1 Id= | sed -e 's|    userId=||g' -e 's|    appId=||g'`
+if [ "$UID" ] && [ "$UID" -gt 9999 ]; then
   appops set --uid "$UID" LEGACY_STORAGE allow
   appops set --uid "$UID" READ_EXTERNAL_STORAGE allow
   appops set --uid "$UID" WRITE_EXTERNAL_STORAGE allow
@@ -151,6 +152,9 @@ PKG=com.miui.securityadd
 pm grant $PKG android.permission.READ_PHONE_STATE
 pm grant $PKG android.permission.CAMERA
 pm grant $PKG android.permission.GET_ACCOUNTS
+if [ "$API" -ge 31 ]; then
+  pm grant $PKG android.permission.BLUETOOTH_CONNECT
+fi
 appops set $PKG SYSTEM_ALERT_WINDOW allow
 grant_permission
 
@@ -164,22 +168,6 @@ pm grant $PKG android.permission.WRITE_CALENDAR
 pm grant $PKG android.permission.RECORD_AUDIO
 appops set $PKG GET_USAGE_STATS allow
 grant_permission
-
-# grant
-PKG=com.lbe.security.miui
-if appops get $PKG > /dev/null 2>&1; then
-  pm grant $PKG android.permission.READ_PHONE_STATE
-  pm grant $PKG android.permission.ACCESS_FINE_LOCATION
-  pm grant $PKG android.permission.ACCESS_COARSE_LOCATION
-  pm grant $PKG android.permission.ACCESS_BACKGROUND_LOCATION
-  grant_permission
-fi
-
-# grant
-PKG=com.miui.powerkeeper
-if appops get $PKG > /dev/null 2>&1; then
-  grant_permission
-fi
 
 
 

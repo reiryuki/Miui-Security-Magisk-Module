@@ -149,7 +149,6 @@ else
   ui_print "  ! Signature test is failed"
   ui_print "    You need to disable Signature Verification of your"
   ui_print "    Android first to use this module. READ Troubleshootings!"
-  ui_print "    Or maybe just insufficient storage."
   if [ "`grep_prop force.install $OPTIONALS`" != 1 ]; then
     abort
   fi
