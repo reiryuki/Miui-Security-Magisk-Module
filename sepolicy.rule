@@ -7,45 +7,44 @@ allow { system_file system_lib_file vendor_file vendor_configs_file } labeledfs 
 allow init { system_file system_lib_file vendor_file vendor_configs_file } { dir file } relabelfrom
 
 # sock_file
-allow { system_app priv_app platform_app untrusted_app_30 untrusted_app_29 untrusted_app_27 untrusted_app } property_socket sock_file write
+allow { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } property_socket sock_file write
 
 # file
-allow { system_app priv_app platform_app untrusted_app_30 untrusted_app_29 untrusted_app_27 untrusted_app } * file { read open getattr map }
-allow { system_app priv_app platform_app untrusted_app_30 untrusted_app_29 untrusted_app_27 untrusted_app } { system_app_data_file privapp_data_file } file execute
-allow { system_app priv_app platform_app untrusted_app_30 untrusted_app_29 untrusted_app_27 untrusted_app } apk_data_file file ioctl
-allow { system_app priv_app platform_app untrusted_app_30 untrusted_app_29 untrusted_app_27 untrusted_app } system_file file lock
-allow { system_app priv_app platform_app untrusted_app_30 untrusted_app_29 untrusted_app_27 untrusted_app } system_linker_exec file execute_no_trans
+allow { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } * file { read open getattr map }
+allow { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } { system_app_data_file privapp_data_file } file execute
+allow { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } apk_data_file file ioctl
+allow { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } system_file file lock
+allow { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } system_linker_exec file execute_no_trans
 allow crash_dump { fuse app_data_file resourcecache_data_file } file { read open getattr }
 
 # dir
-allow { system_app priv_app platform_app untrusted_app_30 untrusted_app_29 untrusted_app_27 untrusted_app } * dir { search getattr read open }
-allow { system_app priv_app platform_app untrusted_app_30 untrusted_app_29 untrusted_app_27 untrusted_app } apk_data_file dir write
+allow { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } * dir { search getattr read open }
+allow { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } apk_data_file dir write
 allow crash_dump { mnt_user_file fuse } dir search
 
 # unix_stream_socket
-allow { system_app priv_app platform_app untrusted_app_30 untrusted_app_29 untrusted_app_27 untrusted_app } init unix_stream_socket connectto
+allow { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } init unix_stream_socket connectto
 
 # process
 allow system_app system_app process ptrace
 allow platform_app platform_app process ptrace
 allow priv_app priv_app process ptrace
-allow untrusted_app_30 untrusted_app_30 process ptrace
 allow untrusted_app_29 untrusted_app_29 process ptrace
 allow untrusted_app_27 untrusted_app_27 process ptrace
 allow untrusted_app untrusted_app process ptrace
 
 # hwservice_manager
-allow { system_app priv_app platform_app untrusted_app_30 untrusted_app_29 untrusted_app_27 untrusted_app } default_android_hwservice hwservice_manager find
+allow { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } default_android_hwservice hwservice_manager find
 
 # service_manager
-allow { system_app priv_app platform_app untrusted_app_30 untrusted_app_29 untrusted_app_27 untrusted_app } default_android_service service_manager { find add }
-allow { system_app priv_app platform_app untrusted_app_30 untrusted_app_29 untrusted_app_27 untrusted_app } { perfshielder ProcessManager } service_manager add
+allow { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } default_android_service service_manager { find add }
+allow { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } { perfshielder ProcessManager } service_manager add
 
 # property_service
-allow { system_app priv_app platform_app untrusted_app_30 untrusted_app_29 untrusted_app_27 untrusted_app } { system_prop debug.prop } property_service set
+allow { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } { system_prop debug.prop } property_service set
 
 # lnk_file
-allow { system_app priv_app platform_app untrusted_app_30 untrusted_app_29 untrusted_app_27 untrusted_app } sysfs_mmc_host lnk_file read
+allow { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } sysfs_mmc_host lnk_file read
 
 
 

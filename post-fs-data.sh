@@ -45,27 +45,6 @@ chmod 0755 $MODPATH/*/libmagiskpolicy.so
 FILE=$MODPATH/sepolicy.pfsd
 sepolicy_sh
 
-# list
-PKGS="`cat $MODPATH/package.txt`
-       com.miui.cleanmaster:micleansdk
-       com.miui.securitycenter.remote
-       com.miui.securitycenter.bootaware
-       com.miui.securitycenter:ui
-       com.miui.securityadd.home"
-for PKG in $PKGS; do
-  magisk --denylist rm $PKG 2>/dev/null
-  magisk --sulist add $PKG 2>/dev/null
-done
-if magisk magiskhide sulist; then
-  for PKG in $PKGS; do
-    magisk magiskhide add $PKG
-  done
-else
-  for PKG in $PKGS; do
-    magisk magiskhide rm $PKG
-  done
-fi
-
 # dependency
 #rm -f /data/adb/modules/MiuiCore/remove
 #rm -f /data/adb/modules/MiuiCore/disable

@@ -20,6 +20,7 @@ ui_print " "
 
 # var
 UID=`id -u`
+[ ! "$UID" ] && UID=0
 
 # log
 if [ "$BOOTMODE" != true ]; then
@@ -42,6 +43,13 @@ if [ "`grep_prop debug.log $OPTIONALS`" == 1 ]; then
   ui_print " "
 fi
 
+# recovery
+if [ "$BOOTMODE" != true ]; then
+  MODPATH_UPDATE=`echo $MODPATH | sed 's|modules/|modules_update/|g'`
+  rm -f $MODPATH/update
+  rm -rf $MODPATH_UPDATE
+fi
+
 # sdk
 NUM=21
 if [ "$API" -lt $NUM ]; then
@@ -56,7 +64,7 @@ fi
 
 # boot mode
 if [ "$BOOTMODE" != true ]; then
-  abort "- Please install via Magisk/KernelSU app only!"
+  abort "! Please install via Magisk/KernelSU app only!"
 fi
 
 # run
@@ -71,8 +79,7 @@ if [ "`grep_prop sepolicy.sh $OPTIONALS`" == 1 ]\
 fi
 
 # miuicore
-if [ ! -d /data/adb/modules_update/MiuiCore ]\
-&& [ ! -d /data/adb/modules/MiuiCore ]; then
+if [ ! -d /data/adb/modules/MiuiCore ]; then
   ui_print "! Miui Core Magisk Module is not installed."
   ui_print "  Please read github installation guide!"
   abort
@@ -86,7 +93,10 @@ ui_print "- Cleaning..."
 PKGS=`cat $MODPATH/package.txt`
 if [ "$BOOTMODE" == true ]; then
   for PKG in $PKGS; do
-    RES=`pm uninstall $PKG 2>/dev/null`
+    FILE=`find /data/app -name *$PKG*`
+    if [ "$FILE" ]; then
+      RES=`pm uninstall $PKG 2>/dev/null`
+    fi
   done
 fi
 remove_sepolicy_rule
@@ -114,7 +124,7 @@ if [ "`grep_prop data.cleanup $OPTIONALS`" == 1 ]; then
   ui_print " "
 #elif [ -d $DIR ]\
 #&& [ "$PREVMODNAME" != "$MODNAME" ]; then
-#  ui_print "- Different version detected"
+#  ui_print "- Different module name is detected"
 #  ui_print "  Cleaning-up $MODID data..."
 #  cleanup
 #  ui_print " "
@@ -181,12 +191,12 @@ for NAME in $NAMES; do
     sh $FILE
     rm -f $FILE
   fi
-  rm -rf /metadata/magisk/$NAME
-  rm -rf /mnt/vendor/persist/magisk/$NAME
-  rm -rf /persist/magisk/$NAME
-  rm -rf /data/unencrypted/magisk/$NAME
-  rm -rf /cache/magisk/$NAME
-  rm -rf /cust/magisk/$NAME
+  rm -rf /metadata/magisk/$NAME\
+   /mnt/vendor/persist/magisk/$NAME\
+   /persist/magisk/$NAME\
+   /data/unencrypted/magisk/$NAME\
+   /cache/magisk/$NAME\
+   /cust/magisk/$NAME
 done
 }
 
@@ -266,21 +276,13 @@ hide_oat
 
 # global
 FILE=$MODPATH/service.sh
+NAME=ro.security.mod_device
 if [ "`grep_prop miui.security.global $OPTIONALS`" == 1 ]; then
-  ui_print "- Global mode"
-  sed -i 's|#g||g' $FILE
+  ui_print "- Security global mode"
+  sed -i "s|#resetprop -n $NAME|resetprop -n $NAME|g" $FILE
   ui_print " "
 fi
 
-# code
-FILE=$MODPATH/service.sh
-NAME=ro.miui.ui.version.code
-if [ "`grep_prop miui.code $OPTIONALS`" == 0 ]; then
-  ui_print "- Removing $NAME..."
-  sed -i "s|resetprop -n $NAME|#resetprop -n $NAME|g" $FILE
-  ui_print "  Some features will be missing."
-  ui_print " "
-fi
 
 
 

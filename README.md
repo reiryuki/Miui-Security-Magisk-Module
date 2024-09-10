@@ -15,29 +15,24 @@
 
 ## Requirements
 - NOT in Miui ROM
-- Android 5 and up
+- Android 5 (SDK 21) and up
 - Magisk or KernelSU installed
-- AOSP signatured ROM or disabled Android Signature Verification in non-AOSP Signatured ROM to allow android.uid.system https://t.me/androidryukimodsdiscussions/58331
+- Any AOSP Signatured ROM to allow android.uid.system
+- Disabled Android Signature Verification for non-AOSP Signatured ROM to allow android.uid.system. Tap here: https://t.me/androidryukimodsdiscussions/58331
 - Miui Core Magisk Module installed
 
 ## Installation Guide & Download Link
 - Install Miui Core Magisk Module first: https://github.com/reiryuki/Miui-Core-Magisk-Module
 - Install this module https://www.pling.com/p/1593896/ via Magisk app or KernelSU app or Recovery if Magisk installed
+- If installation failed, READ Troubleshootings bellow!
+- If you are using KernelSU, you need to disable Unmount Modules by Default in KernelSU app settings
 - Reboot
-- If you are using KernelSU, you need to allow superuser list manually all package name listed in package.txt (and your home launcher app also) (enable show system apps) and reboot after
-- If you are using SUList, you need to allow list manually your home launcher app (enable show system apps) and reboot after
+- If you are using KernelSU, you need to allow superuser list manually all package name listed in package.txt (and your home launcher app also) (enable show system apps) and reboot afterwards
+- If you are using SUList, you need to allow list manually your home launcher app (enable show system apps) and reboot afterwards
 - Go to app info of Security, Cleaner, System service plugin, and MIUI security components app and allow their network access
-
-## Tested on
-- Android 11 DotOS ROM
-- Android 12 Ancient OS ROM
-- Android 12.1 Nusantara ROM
-- Android 13 AOSP ROM & CrDroid ROM
-- Android 14 LineageOS ROM
 
 ## Known Issues
 - Lock apps, hide apps, & data restriction doesn't work
-- Apps does not appear in Game Turbo floating window shortcuts
 
 ## Optionals
 - https://t.me/androidryukimodsdiscussions/54012
@@ -56,6 +51,6 @@
 - You can contribute ideas about this Magisk Module here: https://t.me/androidappsportdevelopment
 
 ## Sponsors
-- https://t.me/androidryukimodsdiscussions/2619
+- https://t.me/ryukinotes/25
 
 

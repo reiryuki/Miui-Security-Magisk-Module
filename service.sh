@@ -10,8 +10,7 @@ API=`getprop ro.build.version.sdk`
 # property
 PROP=`getprop ro.product.device`
 resetprop --delete ro.security.mod_device
-#gresetprop ro.security.mod_device "$PROP"_global
-resetprop -n ro.miui.ui.version.code 14
+#resetprop ro.security.mod_device "$PROP"_global
 #resetprop -n log.tag.autodensity.debug.enable 1
 resetprop -n ro.vendor.fps.switch.default true
 resetprop -n ro.vendor.audio.dpaudio true
@@ -38,6 +37,27 @@ fi
 until [ "`getprop sys.boot_completed`" == 1 ]; do
   sleep 10
 done
+
+# list
+PKGS="`cat $MODPATH/package.txt`
+       com.miui.cleanmaster:micleansdk
+       com.miui.securitycenter.remote
+       com.miui.securitycenter.bootaware
+       com.miui.securitycenter:ui
+       com.miui.securityadd.home"
+for PKG in $PKGS; do
+  magisk --denylist rm $PKG 2>/dev/null
+  magisk --sulist add $PKG 2>/dev/null
+done
+if magisk magiskhide sulist; then
+  for PKG in $PKGS; do
+    magisk magiskhide add $PKG
+  done
+else
+  for PKG in $PKGS; do
+    magisk magiskhide rm $PKG
+  done
+fi
 
 # settings
 DES=system
