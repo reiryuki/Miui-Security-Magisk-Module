@@ -5,10 +5,11 @@
 - The MIT license specified here is for the Magisk Module only, not for Miui apps.
 
 ## Descriptions
-- Security app, Game Turbo, Cleaner, and Security Scan by Xiaomi Inc. ported and integrated as a Magisk Module for all supported and rooted devices with Magisk
+- Security, Cleaner, Scanner, and Game Booster by Xiaomi Inc. ported and integrated as a Magisk Module for all supported and rooted devices with Magisk
 
 ## Sources
 - https://apkmirror.com com.miui.securitycenter, com.miui.securityadd, com.miui.cleanmaster, & com.miui.guardprovider by Xiaomi Inc.
+- libmagiskpolicy.so: Kitsune Mask R6687BB53
 
 ## Screenshots
 - https://t.me/androidryukimods/219
@@ -18,7 +19,7 @@
 - Android 5 (SDK 21) and up
 - Magisk or KernelSU installed
 - Any AOSP Signatured ROM to allow android.uid.system
-- Disabled Android Signature Verification for non-AOSP Signatured ROM to allow android.uid.system. Tap here: https://t.me/androidryukimodsdiscussions/58331
+- Disabled Android Signature Verification for non-AOSP Signatured ROM to allow android.uid.system. Tap here: https://t.me/ryukinotes/81
 - Miui Core Magisk Module installed
 
 ## Installation Guide & Download Link
@@ -32,18 +33,18 @@
 - Go to app info of Security, Cleaner, System service plugin, and MIUI security components app and allow their network access
 
 ## Known Issues
-- Lock apps, hide apps, & data restriction doesn't work
+- Lock apps, hide apps, data restriction, & and some fratures in Game Booster doesn't work
 
 ## Optionals
-- https://t.me/androidryukimodsdiscussions/54012
-- Global: https://t.me/androidryukimodsdiscussions/60861
+- https://t.me/ryukinotes/42
+- Global: https://t.me/ryukinotes/35
 
 ## Troubleshootings
-- https://t.me/androidryukimodsdiscussions/64467
-- Global: https://t.me/androidryukimodsdiscussions/29836
+- https://t.me/ryukinotes/19
+- Global: https://t.me/ryukinotes/34
 
 ## Support & Bug Report
-- https://t.me/androidryukimodsdiscussions/2618
+- https://t.me/ryukinotes/54
 - If you don't do above, issues will be closed immediately
 
 ## Credits and Contributors

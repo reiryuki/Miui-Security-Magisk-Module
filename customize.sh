@@ -21,6 +21,83 @@ ui_print " "
 # var
 UID=`id -u`
 [ ! "$UID" ] && UID=0
+FIRARCH=`grep_get_prop ro.bionic.arch`
+SECARCH=`grep_get_prop ro.bionic.2nd_arch`
+ABILIST=`grep_get_prop ro.product.cpu.abilist`
+if [ ! "$ABILIST" ]; then
+  ABILIST=`grep_get_prop ro.system.product.cpu.abilist`
+fi
+if [ "$FIRARCH" == arm64 ]\
+&& ! echo "$ABILIST" | grep -q arm64-v8a; then
+  if [ "$ABILIST" ]; then
+    ABILIST="$ABILIST,arm64-v8a"
+  else
+    ABILIST=arm64-v8a
+  fi
+fi
+if [ "$FIRARCH" == x64 ]\
+&& ! echo "$ABILIST" | grep -q x86_64; then
+  if [ "$ABILIST" ]; then
+    ABILIST="$ABILIST,x86_64"
+  else
+    ABILIST=x86_64
+  fi
+fi
+if [ "$SECARCH" == arm ]\
+&& ! echo "$ABILIST" | grep -q armeabi; then
+  if [ "$ABILIST" ]; then
+    ABILIST="$ABILIST,armeabi"
+  else
+    ABILIST=armeabi
+  fi
+fi
+if [ "$SECARCH" == arm ]\
+&& ! echo "$ABILIST" | grep -q armeabi-v7a; then
+  if [ "$ABILIST" ]; then
+    ABILIST="$ABILIST,armeabi-v7a"
+  else
+    ABILIST=armeabi-v7a
+  fi
+fi
+if [ "$SECARCH" == x86 ]\
+&& ! echo "$ABILIST" | grep -q x86; then
+  if [ "$ABILIST" ]; then
+    ABILIST="$ABILIST,x86"
+  else
+    ABILIST=x86
+  fi
+fi
+ABILIST32=`grep_get_prop ro.product.cpu.abilist32`
+if [ ! "$ABILIST32" ]; then
+  ABILIST32=`grep_get_prop ro.system.product.cpu.abilist32`
+fi
+if [ "$SECARCH" == arm ]\
+&& ! echo "$ABILIST32" | grep -q armeabi; then
+  if [ "$ABILIST32" ]; then
+    ABILIST32="$ABILIST32,armeabi"
+  else
+    ABILIST32=armeabi
+  fi
+fi
+if [ "$SECARCH" == arm ]\
+&& ! echo "$ABILIST32" | grep -q armeabi-v7a; then
+  if [ "$ABILIST32" ]; then
+    ABILIST32="$ABILIST32,armeabi-v7a"
+  else
+    ABILIST32=armeabi-v7a
+  fi
+fi
+if [ "$SECARCH" == x86 ]\
+&& ! echo "$ABILIST32" | grep -q x86; then
+  if [ "$ABILIST32" ]; then
+    ABILIST32="$ABILIST32,x86"
+  else
+    ABILIST32=x86
+  fi
+fi
+if [ ! "$ABILIST32" ]; then
+  [ -f /system/lib/libandroid.so ] && ABILIST32=true
+fi
 
 # log
 if [ "$BOOTMODE" != true ]; then
@@ -134,25 +211,20 @@ fi
 test_signature() {
 FILE=`find $MODPATH/system -type f -name $APP.apk`
 ui_print "- Testing signature..."
-RES=`pm install -g -i com.android.vending $FILE`
+RES=`pm install -g -i com.android.vending $FILE 2>&1`
 if [ "$RES" ]; then
   ui_print "  $RES"
 fi
 if [ "$RES" == Success ]; then
   RES=`pm uninstall -k $PKG 2>/dev/null`
   ui_print "  Signature test is passed"
-elif [ -d /data/adb/modules_update/luckypatcher ]\
-|| [ -d /data/adb/modules/luckypatcher ]; then
-  ui_print "  Enabling Patches to Android Lucky Patcher Module..."
-  rm -f /data/adb/modules/luckypatcher/remove
-  rm -f /data/adb/modules/luckypatcher/disable
 elif echo "$RES" | grep -q INSTALL_FAILED_SHARED_USER_INCOMPATIBLE; then
   ui_print "  Signature test is failed"
   ui_print "  But installation is allowed for this case"
   ui_print "  Make sure you have deactivated your Android Signature"
   ui_print "  Verification, otherwise the app cannot be installed correctly."
   ui_print "  If you don't know what is it, please READ Troubleshootings!"
-elif echo "$RES" | grep -q INSTALL_FAILED_INSUFFICIENT_STORAGE; then
+elif echo "$RES" | grep -Eq 'INSTALL_FAILED_INSUFFICIENT_STORAGE|not enough space'; then
   ui_print "  Please free-up your internal storage first!"
   abort
 else
@@ -249,12 +321,11 @@ extract_lib() {
 for APP in $APPS; do
   FILE=`find $MODPATH/system -type f -name $APP.apk`
   if [ -f `dirname $FILE`/extract ]; then
-    rm -f `dirname $FILE`/extract
     ui_print "- Extracting..."
-    DIR=`dirname $FILE`/lib/"$ARCH"
+    DIR=`dirname $FILE`/lib/"$ARCHLIB"
     mkdir -p $DIR
     rm -rf $TMPDIR/*
-    DES=lib/"$ABI"/*
+    DES=lib/"$ABILIB"/*
     unzip -d $TMPDIR -o $FILE $DES
     cp -f $TMPDIR/$DES $DIR
     ui_print " "
@@ -269,8 +340,29 @@ done
 }
 
 # extract
-APPS="`ls $MODPATH/system/priv-app` `ls $MODPATH/system/app`"
+APPS="`ls $MODPATH/system/priv-app`
+      `ls $MODPATH/system/app`"
+ARCHLIB=arm64
+ABILIB=arm64-v8a
 extract_lib
+ARCHLIB=arm
+if echo "$ABILIST" | grep -q armeabi-v7a; then
+  ABILIB=armeabi-v7a
+  extract_lib
+elif echo "$ABILIST" | grep -q armeabi; then
+  ABILIB=armeabi
+  extract_lib
+else
+  ABILIB=armeabi-v7a
+  extract_lib
+fi
+ARCHLIB=x64
+ABILIB=x86_64
+extract_lib
+ARCHLIB=x86
+ABILIB=x86
+extract_lib
+rm -f `find $MODPATH/system -type f -name extract`
 # hide
 hide_oat
 
