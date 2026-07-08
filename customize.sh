@@ -242,7 +242,7 @@ ui_print " "
 APP=SecurityCenter
 PKG=com.miui.securitycenter
 if [ "$BOOTMODE" == true ]; then
-  if ! appops get $PKG > /dev/null 2>&1; then
+  if ! appops get $PKG >/dev/null 2>&1; then
     test_signature
   fi
 fi
@@ -268,7 +268,8 @@ for NAME in $NAMES; do
    /persist/magisk/$NAME\
    /data/unencrypted/magisk/$NAME\
    /cache/magisk/$NAME\
-   /cust/magisk/$NAME
+   /cust/magisk/$NAME\
+   /klogdump/magisk/$NAME
 done
 }
 
@@ -282,20 +283,17 @@ sed -i 's|#2||g' $MODPATH/post-fs-data.sh
 }
 permissive() {
 FILE=/sys/fs/selinux/enforce
-SELINUX=`cat $FILE`
-if [ "$SELINUX" == 1 ]; then
-  if ! setenforce 0; then
-    echo 0 > $FILE
-  fi
-  SELINUX=`cat $FILE`
-  if [ "$SELINUX" == 1 ]; then
+FILE2=/sys/fs/selinux/policy
+if [ "`toybox cat $FILE`" = 1 ]; then
+  chmod 640 $FILE
+  chmod 440 $FILE2
+  echo 0 > $FILE
+  if [ "`toybox cat $FILE`" = 1 ]; then
     ui_print "  Your device can't be turned to Permissive state."
     ui_print "  Using Magisk Permissive mode instead."
     permissive_2
   else
-    if ! setenforce 1; then
-      echo 1 > $FILE
-    fi
+    echo 1 > $FILE
     sed -i 's|#1||g' $MODPATH/post-fs-data.sh
   fi
 else
@@ -375,7 +373,21 @@ if [ "`grep_prop miui.security.global $OPTIONALS`" == 1 ]; then
   ui_print " "
 fi
 
-
+# prepare
+DIR=/storage/emulated/"$UID"/Android/data/com.miui.securitycenter/files
+DIR2=/storage/emulated/"$UID"/Android/data/com.miui.securityadd/files
+DIR3=/storage/emulated/"$UID"/Android/data/com.miui.guardprovider/files
+DIR4=/storage/emulated/"$UID"/Android/data/com.miui.cleanmaster/files
+ui_print "- Creating directories:"
+ui_print "  $DIR"
+mkdir -p $DIR
+ui_print "  $DIR2"
+mkdir -p $DIR2
+ui_print "  $DIR3"
+mkdir -p $DIR3
+ui_print "  $DIR4"
+mkdir -p $DIR4
+ui_print " "
 
 
 

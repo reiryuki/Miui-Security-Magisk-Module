@@ -6,6 +6,23 @@ set -x
 
 # var
 API=`getprop ro.build.version.sdk`
+MOD=/data/adb/modules/nomount
+NM=$MOD/bin/nm
+NOMOUNT=false
+[ ! -f $MOD/disable ] && [ -x $NM ] && $NM v >/dev/null 2>&1 && NOMOUNT=true
+
+# NoMount
+if $NOMOUNT; then
+  FILES=`find $MODPATH/system -type f -name plat_seapp_contexts`
+  for FILE in $FILES; do
+    DES=`echo $FILE | sed "s|$MODPATH||g"`
+    RDES=`realpath $DES`
+    if [ -f $RDES ]; then
+      $NM del $RDES 2>/dev/null || true
+      $NM add $RDES $FILE
+    fi
+  done
+fi
 
 # property
 PROP=`getprop ro.product.device`
@@ -97,7 +114,7 @@ if [ "$API" -ge 34 ]; then
   appops set $PKG READ_MEDIA_VISUAL_USER_SELECTED allow
 fi
 PKGOPS=`appops get $PKG`
-UID=`dumpsys package $PKG 2>/dev/null | grep -m 1 Id= | sed -e 's|    userId=||g' -e 's|    appId=||g'`
+UID=`grep "^$PKG " /data/system/packages.list | awk '{print $2}'`
 if [ "$UID" ] && [ "$UID" -gt 9999 ]; then
   appops set --uid "$UID" LEGACY_STORAGE allow
   appops set --uid "$UID" READ_EXTERNAL_STORAGE allow
@@ -114,29 +131,17 @@ fi
 
 # grant
 PKG=com.miui.securitycenter
-if appops get $PKG > /dev/null 2>&1; then
+if appops get $PKG >/dev/null 2>&1; then
   pm grant --all-permissions $PKG
   appops set $PKG SYSTEM_ALERT_WINDOW allow
   appops set $PKG GET_USAGE_STATS allow
   appops set $PKG WRITE_SETTINGS allow
-  APP=SecurityCenter
-  NAME=android.permission.READ_CALL_LOG
-  NAME2=android.permission.READ_SMS
-  NAME3=android.permission.ACCESS_BACKGROUND_LOCATION
-  if ! dumpsys package $PKG | grep "$NAME: granted=true"\
-  || ! dumpsys package $PKG | grep "$NAME2: granted=true"\
-  || ! dumpsys package $PKG | grep "$NAME3: granted=true"; then
-    FILE=`find $MODPATH/system -type f -name $APP.apk`
-    if pm install -g -i com.android.vending $FILE; then
-      pm uninstall -k $PKG
-    fi
-  fi
   appops_set
 fi
 
 # grant
 PKG=com.miui.guardprovider
-if appops get $PKG > /dev/null 2>&1; then
+if appops get $PKG >/dev/null 2>&1; then
   pm grant --all-permissions $PKG
   appops set $PKG WRITE_SETTINGS allow
   appops_set
@@ -144,7 +149,7 @@ fi
 
 # grant
 PKG=com.miui.securityadd
-if appops get $PKG > /dev/null 2>&1; then
+if appops get $PKG >/dev/null 2>&1; then
   pm grant --all-permissions $PKG
   appops set $PKG SYSTEM_ALERT_WINDOW allow
   appops_set
@@ -152,7 +157,7 @@ fi
 
 # grant
 PKG=com.miui.cleanmaster
-if appops get $PKG > /dev/null 2>&1; then
+if appops get $PKG >/dev/null 2>&1; then
   pm grant --all-permissions $PKG
   appops set $PKG GET_USAGE_STATS allow
   appops_set
