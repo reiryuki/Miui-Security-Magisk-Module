@@ -15,6 +15,7 @@ Security, Cleaner, Scanner, and Game Booster app by Xiaomi Inc. ported and integ
 
 v2.1
 - Fix crashes registerReceiver in Android 16
+- Fix permissions
 
 v2.0
 - Prepare /storage/emulated/"$UID"/Android/data/$PKG/files directories
