@@ -5,13 +5,16 @@
 - The MIT license specified here is for the Magisk Module only, not for Miui apps.
 
 ## Descriptions
-Security, Cleaner, Scanner, and Game Booster by Xiaomi Inc. ported and integrated as a Magisk Module for all supported and rooted devices with Magisk
+Security, Cleaner, Scanner, and Game Booster app by Xiaomi Inc. ported and integrated as a Magisk Module for all supported and rooted devices with Magisk
 
 ## Sources
 - https://apkmirror.com com.miui.securitycenter, com.miui.securityadd, com.miui.cleanmaster, & com.miui.guardprovider by Xiaomi Inc.
 - libmagiskpolicy.so: Magisk (stable) 30.7 (30700)
 
 ## Changelog
+
+v2.1
+- Fix crashes registerReceiver in Android 16
 
 v2.0
 - Prepare /storage/emulated/"$UID"/Android/data/$PKG/files directories
@@ -78,16 +81,6 @@ v1.13
 - Fix get/put settings destination
 - Using dex version 035 fix for Android Oreo and bellow
 
-v1.12
-- Fixed resources conflict in some ROMs
-- Disabled global mode
-- Cleaning protected storage
-- Using magiskpolicy --live --apply sepolicy.pfsd if sepolicy.sh=1
-- Using sys.boot_completed=1 detection
-- Fixed permissions
-- Fixed some bugs
-- Removed XMPush service
-
 ## Screenshots
 https://t.me/androidryukimods/219
 
@@ -95,14 +88,13 @@ https://t.me/androidryukimods/219
 - NOT in Miui ROM
 - Android 5 (SDK 21) and up
 - Magisk or Kitsune Mask or KernelSU or Apatch installed
-- Any AOSP Signatured ROM to allow android.uid.system
-- Disabled Android Signature Verification for non-AOSP Signatured ROM to allow android.uid.system. Tap here: https://t.me/ryukinotes/81
+- Disabled Android Signature Verification in non-AOSP Signatured ROM to allow android.uid.system. Tap here: https://t.me/ryukinotes/81
 - Miui Core Magisk Module installed
 
 ## Installation Guide & Download Link
 - If you are using KernelSU, you need to disable Unmount Modules by Default in KernelSU app settings and install https://github.com/KernelSU-Modules-Repo/meta-overlayfs or https://github.com/KernelSU-Modules-Repo/magic_mount_rs or https://github.com/KernelSU-Modules-Repo/hybrid_mount or https://github.com/maxsteeel/nomount first depending on ROM compatibility
 - Install Miui Core Magisk Module first: https://github.com/reiryuki/Miui-Core-Magisk-Module
-- Install this module https://bicolink.com/x5o via Magisk app or Kitsune Mask app or KernelSU app or Apatch app or Recovery if Magisk or Kitsune Mask installed
+- Install this module https://github.com/reiryuki/Miui-Security-Magisk-Module via Magisk app or Kitsune Mask app or KernelSU app or Apatch app or Recovery if Magisk or Kitsune Mask installed
 - If installation failed, READ Troubleshootings bellow!
 - Reboot
 - If you are using KernelSU, you need to allow superuser list manually all package name listed in package.txt (and your home launcher app also) (enable show system apps) and reboot afterwards

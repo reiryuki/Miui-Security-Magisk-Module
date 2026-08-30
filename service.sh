@@ -152,6 +152,8 @@ PKG=com.miui.securityadd
 if appops get $PKG >/dev/null 2>&1; then
   pm grant --all-permissions $PKG
   appops set $PKG SYSTEM_ALERT_WINDOW allow
+  appops set $PKG CONTROL_AUDIO allow
+  appops set $PKG CONTROL_AUDIO_PARTIAL allow
   appops_set
 fi
 
@@ -162,13 +164,6 @@ if appops get $PKG >/dev/null 2>&1; then
   appops set $PKG GET_USAGE_STATS allow
   appops_set
 fi
-
-
-
-
-
-
-
 
 
 

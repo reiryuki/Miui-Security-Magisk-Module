@@ -374,10 +374,18 @@ if [ "`grep_prop miui.security.global $OPTIONALS`" == 1 ]; then
 fi
 
 # prepare
-DIR=/storage/emulated/"$UID"/Android/data/com.miui.securitycenter/files
-DIR2=/storage/emulated/"$UID"/Android/data/com.miui.securityadd/files
-DIR3=/storage/emulated/"$UID"/Android/data/com.miui.guardprovider/files
-DIR4=/storage/emulated/"$UID"/Android/data/com.miui.cleanmaster/files
+PKG=com.miui.securitycenter
+DIR=/storage/emulated/"$UID"/Android/data/$PKG/files
+DIR2=/storage/emulated/"$UID"/Android/data/$PKG/cache
+PKG=com.miui.securityadd
+DIR3=/storage/emulated/"$UID"/Android/data/$PKG/files
+DIR4=/storage/emulated/"$UID"/Android/data/$PKG/cache
+PKG=com.miui.guardprovider
+DIR5=/storage/emulated/"$UID"/Android/data/$PKG/files
+DIR6=/storage/emulated/"$UID"/Android/data/$PKG/cache
+PKG=com.miui.cleanmaster
+DIR7=/storage/emulated/"$UID"/Android/data/$PKG/files
+DIR8=/storage/emulated/"$UID"/Android/data/$PKG/cache
 ui_print "- Creating directories:"
 ui_print "  $DIR"
 mkdir -p $DIR
@@ -387,10 +395,15 @@ ui_print "  $DIR3"
 mkdir -p $DIR3
 ui_print "  $DIR4"
 mkdir -p $DIR4
+ui_print "  $DIR5"
+mkdir -p $DIR5
+ui_print "  $DIR6"
+mkdir -p $DIR6
+ui_print "  $DIR7"
+mkdir -p $DIR7
+ui_print "  $DIR8"
+mkdir -p $DIR8
 ui_print " "
-
-
-
 
 
 
